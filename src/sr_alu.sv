@@ -33,16 +33,18 @@ module sr_alu
             `ALU_SUB  : result =  srcA -  srcB;
             `ALU_KSLL8: begin
               logic [7:0] res [3:0];
-              logic [15:0] debug_temp;
               logic [15:0] temp;
+              logic original_msb;
               sa = srcB[2:0];
               if (sa != 0) begin
                 for (int i = 0; i < 4; i++) begin
                   temp[7:0] = srcA[8*i +: 8];
+                  original_msb = temp[7];
                   temp[15:8] = {8{temp[7]}};
-                  // temp_debug[(7+sa):0] = temp << sa;
-                  //debug_temp = $signed(temp);
                   temp = temp << sa;
+                  if (original_msb == 1'b1) begin
+                    temp[7] = 1'b1;
+                  end
                   if ($signed(temp) > 0 && $signed(temp) > $signed(16'h007F)) begin
                     res[i] = 8'h7F;
                     ov = 1'b1;

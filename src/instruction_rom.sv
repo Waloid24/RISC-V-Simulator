@@ -22,6 +22,6 @@ module instruction_rom
     reg [31:0] rom [0:SIZE - 1];
     assign rd = rom [a];
 
-    initial $readmemh ("ksll8_negative.hex", rom);
+    initial $readmemh ("ksll8.hex", rom);
 
 endmodule
