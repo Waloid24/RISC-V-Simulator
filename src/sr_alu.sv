@@ -23,6 +23,7 @@ module sr_alu
 );
 
     logic [2:0] sa;
+    logic [3:0] shift_val;
     always_comb
         case (oper)
             default   : result =  srcA +  srcB;
@@ -54,6 +55,44 @@ module sr_alu
                     ov = 1'b1;
                   end else begin
                     res[i] = temp[7:0];
+                  end
+                end
+                result = {res[3], res[2], res[1], res[0]};
+              end else begin
+                result = srcA;
+              end
+            end
+            `ALU_KSLRA8: begin
+              logic [7:0] res [3:0];
+              logic [15:0] temp;
+              logic original_msb;
+              logic [3:0] pos_shift;
+              logic [7:0] signed_res;
+              shift_val = srcB[3:0];
+
+              if (shift_val != 0) begin
+                for (int i = 0; i < 4; i++) begin
+                  temp[7:0] = srcA[8*i +: 8];
+                  if ($signed(shift_val) > 0) begin
+                    original_msb = temp[7];
+                    temp[15:8] = {8{temp[7]}};
+                    temp = temp << shift_val;
+                    if (original_msb == 1'b1) begin
+                      temp[7] = 1'b1;
+                    end
+                    if ($signed(temp) > $signed(16'h007F)) begin
+                      res[i] = 8'h7F;
+                      ov = 1'b1;
+                    end else if ($signed(temp) < $signed(16'hFF80)) begin
+                      res[i] = 8'h80;
+                      ov = 1'b1;
+                    end else begin
+                      res[i] = temp[7:0];
+                    end
+                  end else if ($signed(shift_val) < 0) begin
+                    pos_shift = -shift_val;
+                    signed_res = $signed(temp);
+                    res[i] = signed_res >>> pos_shift;
                   end
                 end
                 result = {res[3], res[2], res[1], res[0]};

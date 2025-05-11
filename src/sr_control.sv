@@ -44,10 +44,12 @@ module sr_control
             { `RVF7_SLTU,   `RVF3_SLTU,   `RVOP_SLTU   } : begin regWrite = 1'b1; aluControl = `ALU_SLTU;   end
             { `RVF7_SUB,    `RVF3_SUB,    `RVOP_SUB    } : begin regWrite = 1'b1; aluControl = `ALU_SUB;    end
             { `RVF7_KSLL8,  `RVF3_KSLL8,  `RVOP_KSLL8  } : begin regWrite = 1'b1; aluControl = `ALU_KSLL8;  end
-            { `RVF7_KSLLI8, `RVF3_KSLLI8, `RVOP_KSLLI8 } : begin regWrite = 1'b1; aluSrc = 1'b1; aluControl = `ALU_KSLLI8; end
+            { `RVF7_KSLRA8, `RVF3_KSLRA8, `RVOP_KSLRA8 } : begin regWrite = 1'b1; aluControl = `ALU_KSLRA8; end
 
-            { `RVF7_ANY,  `RVF3_ADDI, `RVOP_ADDI } : begin regWrite = 1'b1; aluSrc = 1'b1; aluControl = `ALU_ADD; end
-            { `RVF7_ANY,  `RVF3_ANY,  `RVOP_LUI  } : begin regWrite = 1'b1; wdSrc  = 1'b1; end
+            { `RVF7_KSLLI8, `RVF3_KSLLI8, `RVOP_KSLLI8 } : begin regWrite = 1'b1; aluSrc = 1'b1; aluControl = `ALU_KSLLI8; end
+            { `RVF7_ANY,    `RVF3_ADDI,   `RVOP_ADDI   } : begin regWrite = 1'b1; aluSrc = 1'b1; aluControl = `ALU_ADD;    end
+
+            { `RVF7_ANY,    `RVF3_ANY,    `RVOP_LUI    } : begin regWrite = 1'b1; wdSrc  = 1'b1; end
 
             { `RVF7_ANY,  `RVF3_BEQ,  `RVOP_BEQ  } : begin branch = 1'b1; condZero = 1'b1; aluControl = `ALU_SUB; end
             { `RVF7_ANY,  `RVF3_BNE,  `RVOP_BNE  } : begin branch = 1'b1; aluControl = `ALU_SUB; end
