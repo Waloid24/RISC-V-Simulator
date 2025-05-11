@@ -105,7 +105,6 @@ module sr_cpu
     );
 
     // alu
-
     wire [31:0] srcB = aluSrc ? immI : rd2;
     wire [31:0] aluResult;
 

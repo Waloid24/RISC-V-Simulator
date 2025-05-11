@@ -31,11 +31,12 @@ module sr_alu
             `ALU_SRL  : result =  srcA >> srcB [4:0];
             `ALU_SLTU : result = (srcA <  srcB) ? 32'd1 : 32'd0;
             `ALU_SUB  : result =  srcA -  srcB;
-            `ALU_KSLL8: begin
+            `ALU_KSLL8, `ALU_KSLLI8: begin
               logic [7:0] res [3:0];
               logic [15:0] temp;
               logic original_msb;
               sa = srcB[2:0];
+              ov = 1'b0;
               if (sa != 0) begin
                 for (int i = 0; i < 4; i++) begin
                   temp[7:0] = srcA[8*i +: 8];

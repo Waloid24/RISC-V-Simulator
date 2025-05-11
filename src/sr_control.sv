@@ -38,12 +38,13 @@ module sr_control
         aluControl  = `ALU_ADD;
 
         casez ({ cmdF7, cmdF3, cmdOp })
-            { `RVF7_ADD,   `RVF3_ADD,   `RVOP_ADD   } : begin regWrite = 1'b1; aluControl = `ALU_ADD;   end
-            { `RVF7_OR,    `RVF3_OR,    `RVOP_OR    } : begin regWrite = 1'b1; aluControl = `ALU_OR;    end
-            { `RVF7_SRL,   `RVF3_SRL,   `RVOP_SRL   } : begin regWrite = 1'b1; aluControl = `ALU_SRL;   end
-            { `RVF7_SLTU,  `RVF3_SLTU,  `RVOP_SLTU  } : begin regWrite = 1'b1; aluControl = `ALU_SLTU;  end
-            { `RVF7_SUB,   `RVF3_SUB,   `RVOP_SUB   } : begin regWrite = 1'b1; aluControl = `ALU_SUB;   end
-            { `RVF7_KSLL8, `RVF3_KSLL8, `RVOP_KSLL8 } : begin regWrite = 1'b1; aluControl = `ALU_KSLL8; end
+            { `RVF7_ADD,    `RVF3_ADD,    `RVOP_ADD    } : begin regWrite = 1'b1; aluControl = `ALU_ADD;    end
+            { `RVF7_OR,     `RVF3_OR,     `RVOP_OR     } : begin regWrite = 1'b1; aluControl = `ALU_OR;     end
+            { `RVF7_SRL,    `RVF3_SRL,    `RVOP_SRL    } : begin regWrite = 1'b1; aluControl = `ALU_SRL;    end
+            { `RVF7_SLTU,   `RVF3_SLTU,   `RVOP_SLTU   } : begin regWrite = 1'b1; aluControl = `ALU_SLTU;   end
+            { `RVF7_SUB,    `RVF3_SUB,    `RVOP_SUB    } : begin regWrite = 1'b1; aluControl = `ALU_SUB;    end
+            { `RVF7_KSLL8,  `RVF3_KSLL8,  `RVOP_KSLL8  } : begin regWrite = 1'b1; aluControl = `ALU_KSLL8;  end
+            { `RVF7_KSLLI8, `RVF3_KSLLI8, `RVOP_KSLLI8 } : begin regWrite = 1'b1; aluSrc = 1'b1; aluControl = `ALU_KSLLI8; end
 
             { `RVF7_ANY,  `RVF3_ADDI, `RVOP_ADDI } : begin regWrite = 1'b1; aluSrc = 1'b1; aluControl = `ALU_ADD; end
             { `RVF7_ANY,  `RVF3_ANY,  `RVOP_LUI  } : begin regWrite = 1'b1; wdSrc  = 1'b1; end

@@ -56,15 +56,15 @@ module tb;
 
         test_num = 0;
 
-        expected_results[0] = 32'h80808080;  // Test 1: No saturation
-        expected_results[1] = 32'h7F7F7F7F;  // Test 2: Positive saturation
-        expected_results[2] = 32'h80808080;  // Test 3: Negative saturation
-        expected_results[3] = 32'h10101010;  // Test 4: Zero shift
+        expected_results[0] = 32'h7F7F7F7F;
+        expected_results[1] = 32'h40404040;
+        expected_results[2] = 32'h80808080;
+        expected_results[3] = 32'hA0A0A0A0;
 
-        expected_ov[0] = 1'b0;  // Test 1: No overflow
-        expected_ov[1] = 1'b1;  // Test 2: Overflow
-        expected_ov[2] = 1'b1;  // Test 3: Overflow
-        expected_ov[3] = 1'b0;  // Test 4: No overflow
+        expected_ov[0] = 1'b1;
+        expected_ov[1] = 1'b0;
+        expected_ov[2] = 1'b1;
+        expected_ov[3] = 1'b0;
 
         regAddr <= 5'd10;  // x10
 
