@@ -14,12 +14,6 @@ OUT_DIR="./"
 # Output files
 SIM_EXEC="$OUT_DIR/sim"
 VCD_FILE="$OUT_DIR/dump.vcd"
-HEX_FILE="$TEST_DIR/ksll8.hex"
-
-if [ ! -f "$HEX_FILE" ]; then
-    echo "Error: $HEX_FILE not found in $TEST_DIR"
-    exit 1
-fi
 
 echo "Cleaning previous outputs..."
 rm -f "$SIM_EXEC" "$VCD_FILE"
