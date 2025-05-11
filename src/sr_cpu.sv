@@ -32,6 +32,7 @@ module sr_cpu
     wire        wdSrc;
     wire  [2:0] aluControl;
     wire        aluOv;
+    wire        aluRounding;
 
     // instruction decode wires
 
@@ -113,6 +114,7 @@ module sr_cpu
         .srcA       ( rd1         ),
         .srcB       ( srcB        ),
         .oper       ( aluControl  ),
+        .rounding   ( aluRounding ),
         .zero       ( aluZero     ),
         .result     ( aluResult   ),
         .ov         ( aluOv       )
@@ -124,15 +126,16 @@ module sr_cpu
 
     sr_control sm_control
     (
-        .cmdOp      ( cmdOp       ),
-        .cmdF3      ( cmdF3       ),
-        .cmdF7      ( cmdF7       ),
-        .aluZero    ( aluZero     ),
-        .pcSrc      ( pcSrc       ),
-        .regWrite   ( regWrite    ),
-        .aluSrc     ( aluSrc      ),
-        .wdSrc      ( wdSrc       ),
-        .aluControl ( aluControl  )
+        .cmdOp       ( cmdOp       ),
+        .cmdF3       ( cmdF3       ),
+        .cmdF7       ( cmdF7       ),
+        .aluZero     ( aluZero     ),
+        .pcSrc       ( pcSrc       ),
+        .regWrite    ( regWrite    ),
+        .aluSrc      ( aluSrc      ),
+        .wdSrc       ( wdSrc       ),
+        .aluControl  ( aluControl  ),
+        .aluRounding ( aluRounding )
     );
 
     // debug register access

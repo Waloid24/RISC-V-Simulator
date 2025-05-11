@@ -16,7 +16,8 @@ module sr_alu
 (
     input        [31:0] srcA,
     input        [31:0] srcB,
-    input        [ 2:0] oper,
+    input        [ 3:0] oper,
+    input               rounding,
     output              zero,
     output logic [31:0] result,
     output logic        ov
@@ -24,6 +25,11 @@ module sr_alu
 
     logic [2:0] sa;
     logic [3:0] shift_val;
+
+    logic [3:0] pos_shift;
+    logic [7:0] signed_res;
+    logic signed [7:0] round_add;
+    logic signed [7:0] rounded;
     always_comb
         case (oper)
             default   : result =  srcA +  srcB;
@@ -66,8 +72,6 @@ module sr_alu
               logic [7:0] res [3:0];
               logic [15:0] temp;
               logic original_msb;
-              logic [3:0] pos_shift;
-              logic [7:0] signed_res;
               shift_val = srcB[3:0];
 
               if (shift_val != 0) begin
@@ -92,7 +96,13 @@ module sr_alu
                   end else if ($signed(shift_val) < 0) begin
                     pos_shift = -shift_val;
                     signed_res = $signed(temp);
-                    res[i] = signed_res >>> pos_shift;
+                    if (rounding) begin
+                      round_add = (1 << (pos_shift-1));
+                      rounded = signed_res + round_add;
+                      res[i] = rounded >>> pos_shift;
+                    end else begin
+                      res[i] = signed_res >>> pos_shift;
+                    end
                   end
                 end
                 result = {res[3], res[2], res[1], res[0]};
