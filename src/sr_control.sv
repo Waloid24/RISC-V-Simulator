@@ -22,7 +22,7 @@ module sr_control
     output logic        regWrite,
     output logic        aluSrc,
     output logic        wdSrc,
-    output logic [ 2:0] aluControl,
+    output logic [ 3:0] aluControl,
     output logic        aluRounding
 );
     logic          branch;
@@ -47,6 +47,7 @@ module sr_control
             { `RVF7_SUB,     `RVF3_SUB,     `RVOP_SUB     } : begin regWrite = 1'b1; aluControl = `ALU_SUB;    end
             { `RVF7_KSLL8,   `RVF3_KSLL8,   `RVOP_KSLL8   } : begin regWrite = 1'b1; aluControl = `ALU_KSLL8;  end
             { `RVF7_KSLRA8,  `RVF3_KSLRA8,  `RVOP_KSLRA8  } : begin regWrite = 1'b1; aluControl = `ALU_KSLRA8; end
+            { `RVF7_KSLRAW,  `RVF3_KSLRAW,  `RVOP_KSLRAW  } : begin regWrite = 1'b1; aluControl = `ALU_KSLRAW; end
             { `RVF7_KSLRA8U, `RVF3_KSLRA8U, `RVOP_KSLRA8U } : begin regWrite = 1'b1; aluRounding = 1'b1; aluControl = `ALU_KSLRA8; end
 
             { `RVF7_KSLLI8, `RVF3_KSLLI8, `RVOP_KSLLI8 } : begin regWrite = 1'b1; aluSrc = 1'b1; aluControl = `ALU_KSLLI8; end

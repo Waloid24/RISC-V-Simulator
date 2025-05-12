@@ -25,6 +25,11 @@ module sr_alu
 
     logic [2:0] sa;
     logic [3:0] shift_val;
+    logic signed [5:0] shift_amount_6;
+    logic [5:0] sa_6;
+    logic [5:0] sa_temp_6;
+    logic [63:0] tmp_64;
+    logic signed [63:0] tmp_signed_64;
 
     logic [3:0] pos_shift;
     logic [7:0] signed_res;
@@ -61,6 +66,7 @@ module sr_alu
                     ov = 1'b1;
                   end else begin
                     res[i] = temp[7:0];
+                    ov = 1'b0;
                   end
                 end
                 result = {res[3], res[2], res[1], res[0]};
@@ -92,6 +98,7 @@ module sr_alu
                       ov = 1'b1;
                     end else begin
                       res[i] = temp[7:0];
+                      ov = 1'b0;
                     end
                   end else if ($signed(shift_val) < 0) begin
                     pos_shift = -shift_val;
@@ -106,6 +113,39 @@ module sr_alu
                   end
                 end
                 result = {res[3], res[2], res[1], res[0]};
+              end else begin
+                result = srcA;
+              end
+            end
+            `ALU_KSLRAW: begin
+              logic original_msb;
+              shift_amount_6 = srcB[5:0];
+              if (shift_amount_6 != 0) begin
+                if (shift_amount_6 < 0) begin
+                  sa_temp_6 = -shift_amount_6;
+                  sa_6 = (sa_temp_6 > 31) ? 31 : sa_temp_6;
+                  result = $signed(srcA) >>> sa_6;
+                  ov = 0;
+                end else begin
+                  original_msb = srcA[31];
+                  sa_6 = shift_amount_6;
+                  tmp_64[31:0] = srcA[31:0];
+                  tmp_64[63:32] = {32{srcA[31]}};
+                  tmp_64 = tmp_64 << sa_6;
+                  if (original_msb == 1'b1) begin
+                    tmp_64[31] = original_msb;
+                  end
+                  if ($signed(tmp_64) > 32'sh7fffffff) begin
+                    result = 32'h7fffffff;
+                    ov = 1'b1;
+                  end else if ($signed(tmp_64) < 32'sh80000000) begin
+                    result = 32'h80000000;
+                    ov = 1'b1;
+                  end else begin
+                    result = tmp_64[31:0];
+                    ov = 1'b0;
+                  end
+                end
               end else begin
                 result = srcA;
               end
